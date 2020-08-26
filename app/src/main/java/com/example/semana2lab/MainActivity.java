@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int timer = 10;
     private TextView timerView;
     private ArrayList<Pregunta> pregunticas;
+    private Button retry;
 
     private int num1r;
     private int num2r;
@@ -33,11 +34,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /////////////
         conter = 0;
         pregunticas = new ArrayList<Pregunta>();
+        retry = findViewById(R.id.retry);
+        retry.setVisibility(View.INVISIBLE);
         //-------------banco
-       /* pregunticas.add(new Pregunta(1,2,2));
-        pregunticas.add(new Pregunta(5,3,2));
-        pregunticas.add(new Pregunta(4,3,2));
-        pregunticas.add(new Pregunta(6,3,2));*/
         for(int i = 0; i<30; i++){
             num1r = (int)Math.floor(Math.random()*11);
             num2r= (int)Math.floor(Math.random()*11);
@@ -67,12 +66,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(
                 ()->{
 
-            while (timer>=0){
+
+            while (true){
 
                 try {
                     Thread.sleep(2000);
-                    timer--;
-                    Log.e("timeeeeerrrrrrr","aaaaaaaaaaaaaaa"+timer);
+                    if (timer>0){
+                        timer--;
+                        Log.e("timeeeeerrrrrrr","aaaaaaaaaaaaaaa"+timer);
+                        runOnUiThread(
+                                ()->{
+                                    timerView.setText(""+timer);
+                                    retry.setVisibility(View.INVISIBLE);
+                                }
+                        );
+                    }else {
+                        timer = 0;
+                        runOnUiThread(
+                                ()->{
+                                    retry.setVisibility(View.VISIBLE);
+
+                                }
+                        );
+
+                    }
+
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -83,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
         ).start();
+
+        retry.setOnClickListener(
+                (view)->{
+                    timer= 10;
+
+                }
+        );
+
 
     }
     public void onClick(View view) {
