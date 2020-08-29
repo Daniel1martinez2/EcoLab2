@@ -28,10 +28,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int num1r;
     private int num2r;
     private int operator;
+    private int points = 0;
+    private TextView pointsText;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /////////////
+        pointsText = findViewById(R.id.points);
+        pointsText.setText(""+points);
         conter = 0;
         pregunticas = new ArrayList<Pregunta>();
         retry = findViewById(R.id.retry);
@@ -123,8 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 respuesta.setTextColor(Color.parseColor("#008000"));
                 respuesta.setText("");
                 timer = 10 ;
+                points+=5;
+                pointsText.setText(""+points);
             }else{
                 respuesta.setTextColor(Color.parseColor("#FF0000"));
+                points-=5;
+                pointsText.setText(""+points);
             }
         }
     }
